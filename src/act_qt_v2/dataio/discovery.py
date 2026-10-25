@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
+from stat import S_ISREG
 from typing import Iterable
 from zoneinfo import ZoneInfo
 
@@ -17,6 +18,8 @@ def build_data_version(source_paths: Iterable[Path]) -> dict[str, object]:
     source_file_info = []
     for path in source_paths:
         stat = path.stat()
+        if not S_ISREG(stat.st_mode):
+            raise ValueError(f"source path must be a regular file: {path}")
         source_file_info.append(
             {
                 "path": str(path),

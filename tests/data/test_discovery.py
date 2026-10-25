@@ -50,3 +50,8 @@ def test_multiple_sources_are_deduplicated_in_input_order(tmp_path: Path) -> Non
 def test_missing_source_is_reported(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError):
         build_data_version([tmp_path / "missing.parquet"])
+
+
+def test_directory_is_not_reported_as_a_source_file(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="source path must be a regular file"):
+        build_data_version([tmp_path])
