@@ -8,6 +8,9 @@ version = "0.1.0"
 description = "Source-file auditing helpers ported from ACT_QT_V3."
 requires-python = ">=3.10"
 
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 
