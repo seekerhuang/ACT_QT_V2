@@ -2,11 +2,13 @@ import argparse
 import json
 from pathlib import Path
 
+from act_qt_v2 import __version__
 from act_qt_v2.dataio import build_data_version
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Report source-file metadata as JSON.")
+    parser.add_argument("--version", action="version", version=f"act-qt-v2 {__version__}")
     parser.add_argument("paths", nargs="+", type=Path)
     args = parser.parse_args()
     try:

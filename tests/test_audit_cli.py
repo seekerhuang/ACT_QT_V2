@@ -31,3 +31,13 @@ def test_cli_reports_missing_file_without_traceback(tmp_path, monkeypatch, capsy
     assert output.out == ""
     assert str(source) in output.err
     assert "Traceback" not in output.err
+
+
+def test_cli_version_does_not_require_source_paths(monkeypatch, capsys):
+    monkeypatch.setattr(sys, "argv", ["act-qt-audit", "--version"])
+
+    with pytest.raises(SystemExit) as error:
+        main()
+
+    assert error.value.code == 0
+    assert capsys.readouterr().out.strip() == "act-qt-v2 0.1.0"
