@@ -55,3 +55,14 @@ def test_missing_source_is_reported(tmp_path: Path) -> None:
 def test_directory_is_not_reported_as_a_source_file(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="source path must be a regular file"):
         build_data_version([tmp_path])
+
+
+def test_source_metadata_preserves_nanosecond_timestamp(tmp_path: Path) -> None:
+    source = tmp_path / "source.parquet"
+    source.write_bytes(b"data")
+    timestamp_ns = 1704153600123456789
+    os.utime(source, ns=(timestamp_ns, timestamp_ns))
+
+    result = build_data_version([source])
+
+    assert result["source_file_info"][0]["last_write_time_ns"] == source.stat().st_mtime_ns

@@ -24,6 +24,7 @@ def build_data_version(source_paths: Iterable[Path]) -> dict[str, object]:
             {
                 "path": str(path),
                 "size_bytes": int(stat.st_size),
+                "last_write_time_ns": stat.st_mtime_ns,
                 "last_write_time": datetime.fromtimestamp(stat.st_mtime, tz=SHANGHAI_TZ).isoformat(),
             }
         )
