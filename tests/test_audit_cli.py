@@ -41,3 +41,15 @@ def test_cli_version_does_not_require_source_paths(monkeypatch, capsys):
 
     assert error.value.code == 0
     assert capsys.readouterr().out.strip() == "act-qt-v2 0.1.0"
+
+
+def test_cli_compact_mode_prints_valid_json_on_one_line(tmp_path, monkeypatch, capsys):
+    source = tmp_path / "data.parquet"
+    source.write_bytes(b"data")
+    monkeypatch.setattr(sys, "argv", ["act-qt-audit", str(source), "--compact"])
+
+    main()
+
+    output = capsys.readouterr().out
+    assert output.count("\n") == 1
+    assert json.loads(output)["file_size_bytes_total"] == 4
